@@ -5,7 +5,7 @@ Anthropologie is a unique, full-lifestyle shopping destination, with a mostly ex
 ## Have a Look 😍
 ### Navbar and Home Page
 <p align="center">
-  <img src="./public/anthropologie_01.png" alt='anthropologie_01 image' align="center" />
+  <img src="https://github.com/Khalidshah12/anthropologie/blob/master/public/anthropologie_01.png?raw=true" alt='anthropologie_01 image' align="center" />
 </p>
 
 ### Product Page
