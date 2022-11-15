@@ -10,22 +10,22 @@ Anthropologie is a unique, full-lifestyle shopping destination, with a mostly ex
 
 ### Product Page
 <p align="center">
-  <img src="./public/anthropologie_02.png" alt='anthropologie_02 image' align="center" />
+  <img src="https://github.com/Khalidshah12/anthropologie/blob/master/public/anthropologie_02.png" alt='anthropologie_02 image' align="center" />
 </p>
 
 ### Single Page of the Product
 <p align="center">
-  <img src="./public/anthropologie_03.png" alt='anthropologie_03 image' align="center" />
+  <img src="https://github.com/Khalidshah12/anthropologie/blob/master/public/anthropologie_03.png" alt='anthropologie_03 image' align="center" />
 </p>
 
 ### Cart Product Page
 <p align="center">
-  <img src="./public/anthropologie_04.png" alt='anthropologie_04 image' align="center" />
+  <img src="https://github.com/Khalidshah12/anthropologie/blob/master/public/anthropologie_04.png" alt='anthropologie_04 image' align="center" />
 </p>
 
 ### Payment page
 <p align="center">
-  <img src="./public/anthropologie_05.png" alt='anthropologie_05 image' align="center" />
+  <img src="https://github.com/Khalidshah12/anthropologie/blob/master/public/anthropologie_05.png" alt='anthropologie_05 image' align="center" />
 </p>
 
 ### Vercel Link 
