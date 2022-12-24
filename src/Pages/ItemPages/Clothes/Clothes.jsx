@@ -1,11 +1,10 @@
 import React from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { Box, Text, Select } from "@chakra-ui/react";
+import { Box, Text, Center } from "@chakra-ui/react";
 import Sidebar from "../Sidebar";
 
 import { Link } from "react-router-dom";
-// import Navbar from "../../../components/Navbar/Navbar";
-// import Footer from "../../../components/Footer/Footer";
+
 import { casual } from "../../../db";
 import { party } from "../../../db";
 import { flare } from "../../../db";
@@ -15,9 +14,97 @@ import FlareCard from "./Jeans/JeansItem/FlareCard";
 import PartyCard from "./Dresses/DressItem/PartyCard";
 import WidelegCard from "./Panits/PanitItem/WidelegCard";
 import { useMediaQuery } from "@chakra-ui/react";
+import Filter from "../Filter";
+import { useDispatch } from "react-redux";
+import { get_casual_success } from "../../../Redux/AppReducer/action";
+import { get_party_success } from "../../../Redux/AppReducer/action";
+import { get_flare_success } from "../../../Redux/AppReducer/action";
+import { get_wideleg_success } from "../../../Redux/AppReducer/action";
 
 function Clothes() {
   const [isMobile] = useMediaQuery("(max-width: 1024px)");
+
+  const dispatch = useDispatch();
+
+  const filterhandler = (e) => {
+    if (e.target.value === "lowtohigh") {
+      const lowtohighdata = casual.sort((a, b) => {
+        return a.price - b.price;
+      });
+      console.log(lowtohighdata);
+      dispatch(get_casual_success(lowtohighdata));
+    }
+
+    if (e.target.value === "hightolow") {
+      const hightolowdata = casual.sort((a, b) => {
+        return b.price - a.price;
+      });
+      console.log(hightolowdata);
+      dispatch(get_casual_success(hightolowdata));
+    }
+
+    if (e.target.value === "removefilter") {
+      dispatch(get_casual_success(casual));
+    }
+
+    if (e.target.value === "lowtohigh") {
+      const lowtohighdata = party.sort((a, b) => {
+        return a.price - b.price;
+      });
+      console.log(lowtohighdata);
+      dispatch(get_party_success(lowtohighdata));
+    }
+
+    if (e.target.value === "hightolow") {
+      const hightolowdata = party.sort((a, b) => {
+        return b.price - a.price;
+      });
+      console.log(hightolowdata);
+      dispatch(get_party_success(hightolowdata));
+    }
+
+    if (e.target.value === "removefilter") {
+      dispatch(get_party_success(party));
+    }
+    if (e.target.value === "lowtohigh") {
+      const lowtohighdata = flare.sort((a, b) => {
+        return a.price - b.price;
+      });
+      console.log(lowtohighdata);
+      dispatch(get_flare_success(lowtohighdata));
+    }
+
+    if (e.target.value === "hightolow") {
+      const hightolowdata = flare.sort((a, b) => {
+        return b.price - a.price;
+      });
+      console.log(hightolowdata);
+      dispatch(get_flare_success(hightolowdata));
+    }
+
+    if (e.target.value === "removefilter") {
+      dispatch(get_flare_success(flare));
+    }
+    if (e.target.value === "lowtohigh") {
+      const lowtohighdata = wideleg.sort((a, b) => {
+        return a.price - b.price;
+      });
+      console.log(lowtohighdata);
+      dispatch(get_wideleg_success(lowtohighdata));
+    }
+
+    if (e.target.value === "hightolow") {
+      const hightolowdata = wideleg.sort((a, b) => {
+        return b.price - a.price;
+      });
+      console.log(hightolowdata);
+      dispatch(get_wideleg_success(hightolowdata));
+    }
+
+    if (e.target.value === "removefilter") {
+      dispatch(get_wideleg_success(wideleg));
+    }
+  };
 
   const clothesBox = (
     <Box
@@ -28,7 +115,9 @@ function Clothes() {
       mt={"30px"}
       flexWrap={"wrap"}
       color={"white"}
-      ml={{base:"5px", sm:"60px", md:"60px",lg:"60px"}}
+      alignItems={"center"}
+      justifyContent="center"
+      ml={{ base: "5px", sm: "60px", md: "60px", lg: "60px" }}
     >
       <Link to={"/clothes/dresses"}>
         <Box
@@ -134,7 +223,7 @@ function Clothes() {
     <Box>
       {/* <Navbar/> */}
       <Box>
-      <Box>{clothesBox}</Box>
+        <Box>{clothesBox}</Box>
         <Box mt={"40px"}>
           <Box width={"90%"} m="auto">
             <Box
@@ -169,38 +258,16 @@ function Clothes() {
                             height: "auto",
                           }}
                         >
-                          {casual.length + wideleg.length + party.length + flare.length} products
+                          {casual.length +
+                            wideleg.length +
+                            party.length +
+                            flare.length}{" "}
+                          products
                         </span>
                       </Text>
                     </Box>
                     <Box display={"flex"}>
-                      <Box display={"flex"} gap="5px">
-                        <Text mt={"3px"}>Sort :</Text>
-                        <Box>
-                          <Select
-                            h={"35px"}
-                            border={"1px solid #939395"}
-                            // margin="0 30px 0 0"
-                            // padding={"0 10px 0 10px"}
-                            minHeight="auto"
-                            minWidth={"auto"}
-                            placeholder="Featured"
-                            _hover="none"
-                          >
-                            <option value="lowtohigh">
-                              Price: Low to High
-                            </option>
-                            <option value="hightolow">
-                              Price: High to Low
-                            </option>
-                            <option value="Newest">Newest</option>
-                            <option value="Bestselling">Bestselling</option>
-                            <option value="Ratings">High To Low</option>
-                            <option value="atoz">A-Z</option>
-                            <option value="ztoa">Z-A</option>
-                          </Select>
-                        </Box>
-                      </Box>
+                      <Filter filterhandler={filterhandler} />
                       <Box display={"flex"}>
                         <ChevronLeftIcon
                           fontSize={"40px"}
@@ -219,11 +286,18 @@ function Clothes() {
                 </Box>
                 <Box mt="30px">
                   {/* data here */}
-
-                  <PartyCard />
-                  <CasualCard />
-                  <FlareCard />
-                  <WidelegCard />
+                  <Center>
+                    <PartyCard />
+                  </Center>
+                  <Center>
+                    <CasualCard />
+                  </Center>
+                  <Center>
+                    <FlareCard />
+                  </Center>
+                  <Center>
+                    <WidelegCard />
+                  </Center>
                 </Box>
               </Box>
             </Box>

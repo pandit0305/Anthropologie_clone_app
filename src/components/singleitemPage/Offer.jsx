@@ -47,10 +47,10 @@ export default function Offer() {
 
   var settings = {
     dots: false,
-    infinite: false,
+    infinite: true,
     speed: 500,
     slidesToShow: 5,
-    slidesToScroll: 1,
+    slidesToScroll: 4,
     initialSlide: 0,
     responsive: [
       {
@@ -82,14 +82,14 @@ export default function Offer() {
   return (
     <Box >
       <Spacer h={"100px"} id="offer"/>
-      <Box w={"100%"} bgColor={"#202124"} h="auto" minWidth={"auto"}>
+      <Box w={"100%"} bgColor={"#202124"} h="600px" minWidth={"auto"} mb="50px">
         <Box w={"80%"} m={"auto"}>
           <Spacer h={"50px"} />
           <Flex color={"white"} justifyContent={"space-between"}>
             <Heading fontSize={"38px"}>OFFERS & DEALS</Heading>
           </Flex>
           <Spacer h={"50px"} />
-          <Box>
+          <Box >
             {/* slider */}
             <Slider {...settings}>
               {casualData.map((ele) => (
@@ -107,7 +107,7 @@ export default function Offer() {
                     src={ele.image}
                     alt="image"
                     h={"360px"}
-                    w="310px"
+                    w="100%"
 
                     borderRadius={"10px"}
                     cursor="pointer"
@@ -119,6 +119,8 @@ export default function Offer() {
             </Slider>
           </Box>
         </Box>
+       
+
       </Box>
     </Box>
   );

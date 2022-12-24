@@ -1,16 +1,66 @@
 import React from "react";
-// import {workpaints} from  '../../../../db';
+import { useState, useEffect } from "react";
+import Pagination from "../../../Pagination";
 import Sidebar from "../../../Sidebar";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-// import Navbar from "../../../../../components/Navbar/Navbar";
-// import Footer from "../../../../../components/Footer/Footer";
-import { Box, Text, Select } from "@chakra-ui/react";
+
+import { get_workpaints_success } from "../../../../../Redux/AppReducer/action";
+import { useDispatch } from "react-redux";
+import { Box, Text, Center } from "@chakra-ui/react";
 import { workpaints } from "../../../../../db";
 import WorkPaintCard from "./WorkPaintCard";
 import { useMediaQuery } from "@chakra-ui/react";
+import Filter from "../../../Filter";
 
 function WorkPaint() {
   const [isMobile] = useMediaQuery("(max-width: 1024px)");
+
+  const dispatch = useDispatch();
+
+  const [page, setPage] = useState(1);
+
+  const totalitem = workpaints.length;
+
+  const pagelimit = 50;
+  const no_page = Math.ceil(totalitem / pagelimit);
+
+  const getPagination = (page) => {
+    const trimStart = (page - 1) * pagelimit;
+    const trimEnd = trimStart + pagelimit;
+
+    const data = workpaints.slice(trimStart, trimEnd);
+
+    dispatch(get_workpaints_success(data));
+  };
+
+  const pageHandler = (value) => {
+    setPage((prev) => prev + value);
+  };
+
+  useEffect(() => {
+    getPagination(page);
+  }, [page]);
+
+  const filterhandler = (e) => {
+    if (e.target.value === "lowtohigh") {
+      const lowtohighdata = workpaints.sort((a, b) => {
+        return a.price - b.price;
+      });
+      console.log(lowtohighdata);
+      dispatch(get_workpaints_success(lowtohighdata));
+    }
+
+    if (e.target.value === "hightolow") {
+      const hightolowdata = workpaints.sort((a, b) => {
+        return b.price - a.price;
+      });
+      console.log(hightolowdata);
+      dispatch(get_workpaints_success(hightolowdata));
+    }
+
+    if (e.target.value === "removefilter") {
+      dispatch(get_workpaints_success(workpaints));
+    }
+  };
 
   return (
     <>
@@ -52,41 +102,15 @@ function WorkPaint() {
                       </span>
                     </Text>
                   </Box>
-                  <Box display={"flex"}>
-                    <Box display={"flex"} gap="5px">
-                      <Text mt={"3px"}>Sort : </Text>
-                      <Box>
-                        <Select
-                          h={"35px"}
-                          border={"1px solid #939395"}
-                          margin="0 30px 0 0"
-                          padding={"0 10px 0 10px"}
-                          minHeight="auto"
-                          minWidth={"auto"}
-                          placeholder="Featured"
-                          _hover="none"
-                        >
-                          <option value="lowtohigh">Price: Low to High</option>
-                          <option value="hightolow">Price: High to Low</option>
-                          <option value="Newest">Newest</option>
-                          <option value="Bestselling">Bestselling</option>
-                          <option value="Ratings">High To Low</option>
-                          <option value="atoz">A-Z</option>
-                          <option value="ztoa">Z-A</option>
-                        </Select>
-                      </Box>
+                  <Box display={"flex"} gap="10px">
+                    <Box>
+                      <Filter filterhandler={filterhandler} />
                     </Box>
-                    <Box display={"flex"}>
-                      <ChevronLeftIcon
-                        fontSize={"40px"}
-                        _hover={{ color: "#167A92" }}
-                      />
-                      <Box>
-                        <Text mt={"8px"}>1/47</Text>
-                      </Box>
-                      <ChevronRightIcon
-                        fontSize={"40px"}
-                        _hover={{ color: "#167A92" }}
+                    <Box>
+                      <Pagination
+                        pageHandler={pageHandler}
+                        page={page}
+                        no_page={no_page}
                       />
                     </Box>
                   </Box>
@@ -94,24 +118,12 @@ function WorkPaint() {
 
                 {/* data  */}
               </Box>
-              <WorkPaintCard />
+              <Center>
+                <WorkPaintCard />
+              </Center>
             </Box>
           </Box>
-          <Box display={"flex"} justifyContent="end">
-            <Box display={"flex"}>
-              <ChevronLeftIcon
-                fontSize={"40px"}
-                _hover={{ color: "#167A92" }}
-              />
-              <Box>
-                <Text mt={"8px"}>1/47</Text>
-              </Box>
-              <ChevronRightIcon
-                fontSize={"40px"}
-                _hover={{ color: "#167A92" }}
-              />
-            </Box>
-          </Box>
+         
         </Box>
       </Box>
       {/* <Footer/> */}

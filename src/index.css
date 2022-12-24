@@ -6,7 +6,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #FDFDF9;
-
 }
 
 code {
@@ -14,10 +13,13 @@ code {
     monospace;
 }
 
+#jeans{
+  font-weight: bold;
+  font-family: sans-serif;
+}
 #jeans:hover{
   text-decoration: none;
 }
-
 
 #dropdown-content{
   display: none;
@@ -30,3 +32,4 @@ code {
 #dropdown:hover #dropdown-content{
   display: block;
 }
+

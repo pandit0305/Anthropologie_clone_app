@@ -1,7 +1,12 @@
-import React, { useContext } from "react";
+import React, { useEffect } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../context/authcontext/AuthContext";
 import { Link } from "react-router-dom";
 
 import Styles from "./Navbar.module.css";
+import { signInWithGoogle } from "../../Service/firebase";
+import firebase from "../../Service/firebase";
+import { auth } from "../../Service/firebase";
 
 import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { BsSearch } from "react-icons/bs";
@@ -31,33 +36,50 @@ import {
   Divider,
   HStack,
   Image,
+  Img,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
-import { AuthContext } from "../../context/authcontext/AuthContext";
 import Navbar2 from "./Navbar2";
 import useTimer from "../timer/useTimer";
-import { setItem} from "../../localstorage/LocalStorage";
-
+import { setItem } from "../../localstorage/LocalStorage";
 
 const Navbar = () => {
   const countrycode = "+91";
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: secondisOpen,
+    onOpen: secondonOpen,
+    onClose: secondonClose,
+  } = useDisclosure();
   const finalRef = React.useRef(null);
   const [pin, SetPin] = useState("");
   const [show, SetShow] = useState(false);
   const [error, SetError] = useState(false);
   const [phone, setPhone] = useState(countrycode);
-  const navigate = useNavigate();
+  const [username, setUsername] = useState(null);
 
+  const navigate = useNavigate();
 
   const { user, SetUser } = useContext(AuthContext);
 
   // uset timer hook
   const { timer, Start, Stop } = useTimer(1000);
 
+  // google oath
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      setItem("googleToken", username);
+      setUsername(user);
+    });
+  }, [username]);
+
+  console.log(username);
   const SignoutHandler = () => {
-    navigate("/");
     window.location.reload();
-    // SetUser(false)
+    navigate("/");
     SetShow(false);
     signOut();
   };
@@ -82,6 +104,7 @@ const Navbar = () => {
         size: "invisible",
         callback: (response) => {
           // recaptcha solved, allow sign in with phone number
+          console.log(response);
         },
       },
       authentication
@@ -97,7 +120,7 @@ const Navbar = () => {
         .then((result) => {
           // User signed in successfully.
           const user = result.user;
-          setItem("token", user);
+          setItem("token", user.stsTokenManager.accessToken);
           console.log(user);
           SetUser(true);
           // ...
@@ -131,9 +154,9 @@ const Navbar = () => {
             SetShow(true);
           })
           .catch((err) => {
-            SetError(true);
             Stop();
             console.log(err);
+            SetError(true);
           });
       }, 3000);
     }
@@ -265,6 +288,7 @@ const Navbar = () => {
           Submit
         </Button>
       </Center>
+      <Center></Center>
     </Box>
   );
 
@@ -357,20 +381,73 @@ const Navbar = () => {
             <AiOutlineUser fontSize={"25px"} color="#167A92" />
           </Box>
           <Box display={"flex"} gap="5px">
+            <Box id="recaptcha-box"></Box>
+
             <Box
               ref={finalRef}
               tabIndex={-1}
               aria-label="Focus moved to this box"
             ></Box>
-            <Box color="#167A92">
-              {user ? (
-                <MyAccount SignoutHandler={SignoutHandler} />
-              ) : (
-                <Box onClick={onOpen} cursor="pointer" fontSize={"14px"}>
-                  Sign In / Sign Up
-                </Box>
-              )}
-            </Box>
+            {username ? (
+              <Menu isOpen={secondisOpen}>
+                <MenuButton
+                  onMouseEnter={secondonOpen}
+                  onMouseLeave={secondonClose}
+                >
+                  <Image
+                    width="30px"
+                    height="30px"
+                    borderRadius={"50%"}
+                    src={username.photoURL}
+                  />
+                </MenuButton>
+                <MenuList
+                  width={"200px"}
+                  borderRadius="10px"
+                  onMouseEnter={secondonOpen}
+                  onMouseLeave={secondonClose}
+                >
+                  <MenuItem>
+                    <Link
+                      px={2}
+                      py={1}
+                      rounded={"md"}
+                      _hover={{
+                        textDecoration: "underline",
+                      }}
+                    >
+                      {username.displayName}
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link
+                      px={2}
+                      py={1}
+                      rounded={"md"}
+                      _hover={{
+                        textDecoration: "underline",
+                      }}
+                      onClick={() => {
+                        auth.signOut();
+                        setItem("googleToken", "");
+                      }}
+                    >
+                      Sign Out
+                    </Link>
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            ) : (
+              <Box color="#167A92">
+                {user ? (
+                  <MyAccount SignoutHandler={SignoutHandler} />
+                ) : (
+                  <Box onClick={onOpen} cursor="pointer" fontSize={"14px"}>
+                    Sign In / Sign Up
+                  </Box>
+                )}
+              </Box>
+            )}
 
             <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
@@ -390,12 +467,35 @@ const Navbar = () => {
                   <Box mt={"30px"} mb="30px">
                     {display}
                   </Box>
+                  <Center>
+                    <Box mb={"20px"}>
+                      <Button
+                        borderRadius="none"
+                        h={"45px"}
+                        width={{ lg: "306.016px", md: "250px", sm: "200px" }}
+                        p={"10px 20px 10px 20px"}
+                        minH="45px"
+                        border={"1px solid black"}
+                        color="red"
+                        _hover={{
+                          color: "red",
+                          backgroundColor: "white",
+                          borderRadius: "10px",
+                        }}
+                        fontWeight={"bold"}
+                        onClick={() => {
+                          signInWithGoogle();
+                          onClose();
+                        }}
+                      >
+                        Sign In With Google
+                      </Button>
+                    </Box>
+                  </Center>
                 </ModalBody>
               </ModalContent>
             </Modal>
-            <Center>
-              <Box id="recaptcha-box"></Box>
-            </Center>
+            <Center>{/* <Box id="recaptcha-box"></Box> */}</Center>
           </Box>
         </Box>
       </Box>
@@ -456,16 +556,14 @@ const Navbar = () => {
               </Box>
             </Box>
             <Link
-             
-             border ="1px solid red"
+              border="1px solid red"
               style={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                
               }}
-              
               to="/cart"
+              ml="-10px"
             >
               <AiOutlineShoppingCart size="1.5em" />
             </Link>
@@ -473,16 +571,8 @@ const Navbar = () => {
         </Box>
       </Box>
       <Navbar2 />
-      <Box 
-      className={Styles.nav_item}
-      >
-        <Box
-          width={"90%"}
-          m="auto"
-          display="flex"
-          justifyContent={"center"}
-        
-        >
+      <Box className={Styles.nav_item}>
+        <Box width={"90%"} m="auto" display="flex" justifyContent={"center"}>
           <Box
             display={"flex"}
             gap="30px"
@@ -490,7 +580,7 @@ const Navbar = () => {
             flexWrap={"wrap"}
             className={Styles.navbar}
           >
-            <p>Gifts</p>
+            <p className={Styles.RED}>Gifts</p>
 
             <p>New!</p>
             <Link to={"/clothes/dresses"}>
@@ -506,6 +596,7 @@ const Navbar = () => {
             </Link>
 
             <p>Accessories!</p>
+            {/* <p>Home & Furniture!</p> */}
 
             <p>BHLDN Weddings</p>
 
@@ -513,10 +604,9 @@ const Navbar = () => {
 
             <p>Garden & outdoor</p>
 
-            <p>Sale</p>
+            <p className={Styles.RED}>Extra 40% Off Sale</p>
           </Box>
         </Box>
-
       </Box>
     </Box>
   );

@@ -4,6 +4,7 @@ import { GrInstagram } from "react-icons/gr";
 import { IoLocationSharp } from "react-icons/io5";
 import { HiOutlineMail } from "react-icons/hi";
 import "./Footer.css";
+// import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -17,18 +18,22 @@ const Footer = () => {
               events and much more!
             </p>
           </div>
-          <div className="firstly1">
-            <input placeholder="Enter Email Address" />
+          <form
+            className="firstly1"
+            action="https://getform.io/f/34bd933a-2684-49ec-8de1-4ba482473cc2"
+            method="POST"
+          >
+            <input type="text" name="Email" placeholder="Enter Email Address" />
             <button>SUBMIT</button>
-          </div>
+          </form>
         </div>
         <h1 className="end">
           By signing up, you will receive Anthropologie offers, promotions and
           other commercial messages. You are also agreeing to Anthropologie’s
-          Privacy Policy. You may unsubscribe at any time.
+          Privacy Policy. You may unsubscribe at any time .
         </h1>
 
-        {/* Footer Here */}
+        {/* Footer Here  */}
         <div className="footer">
           <li className="Box">
             <p>Help</p>
@@ -42,7 +47,14 @@ const Footer = () => {
 
           <li className="Box">
             <p>About Us</p>
-            <ul>Our Story</ul>
+            <ul>
+              <a
+                href="https://www.anthropologie.com/help/our-story"
+                target="_blank"
+              >
+                Our Story
+              </a>
+            </ul>
             <ul>Events </ul>
             <ul>A Greater Good</ul>
             <ul>Diversity & Inclusion</ul>
@@ -81,25 +93,50 @@ const Footer = () => {
             src="https://images.ctfassets.net/5de70he6op10/4gWq1G4qLLgmqlNeHfzV2T/55298745127c36c5876f4013434c0c37/Download_on_the_App_Store_Badge_US-UK_RGB_wht_092917_Copy_2.svg"
             alt=""
           />
-          <BsPinterest size="1.5em" />
-          <GrInstagram size="1.5em" />
-          <FaFacebookSquare size="1.5em" />
-          <BsTwitter size="1.5em" />
+          <a href="https://www.pinterest.com/anthropologie/" target="_blank">
+            <BsPinterest size="1.5em" />
+          </a>
+
+          <a href=" https://www.instagram.com/anthropologie/" target="_blank">
+            <GrInstagram size="1.5em" />
+          </a>
+
+          <a href="https://www.facebook.com/Anthropologie" target="_blank">
+            <FaFacebookSquare size="1.5em" />
+          </a>
+          <a href="https://twitter.com/anthropologie" target="_blank">
+            <BsTwitter size="1.5em" />
+          </a>
         </div>
         <div>
           <img
             className="banner"
-            src="https://images.ctfassets.net/5de70he6op10/2DRgCRXNIEkk0wIqUo2ywa/20ea44a95fb361eaf034b42eec179d44/_site_footer__download_app_enable_push_.jpg"
+            src="https://images.ctfassets.net/5de70he6op10/6QWLFz6Lw3Gua0R6sZm9OU/61d2acdd321f73a35d140957a266f02c/Holiday22_SiteFooter_DownloadTheApp_LS.jpg"
             alt=""
           />
         </div>
         <div className="country">
-          <p>US</p>
-          <p>France</p>
-          <p>Germany</p>
-          <p>Italy</p>
-          <p>Spain</p>
-          <p>UK</p>
+          <a
+            href="https://www.anthropologie.com/?cm_mmc=Anthro-_-Footer-_-en-US-_-en-US&cm_sp=FOOTER-_-INTL-_-en-US_en-US&ref=footer"
+            target="_blank"
+          >
+            US
+          </a>
+          <a
+            href="https://www.anthropologie.com/de-de?cm_mmc=Anthro-_-Footer-_-de-DE-_-en-US&ref=footer&utm_campaign=intl_footer&utm_medium=a_ref&utm_source=anthro_en-us&utm_term=de-de"
+            target="_blank"
+          >
+            France
+          </a>
+          <a>Germany</a>
+          <a>Italy</a>
+          <a
+            href="https://www.anthropologie.com/de-de?cm_mmc=Anthro-_-Footer-_-de-DE-_-en-US&ref=footer&utm_campaign=intl_footer&utm_medium=a_ref&utm_source=anthro_en-us&utm_term=de-de"
+            target="_blank"
+          >
+            Spain
+          </a>
+          <a>UK</a>
         </div>
 
         <div className="footerEnd">
